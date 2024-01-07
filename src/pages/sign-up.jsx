@@ -1,4 +1,8 @@
-import { emailValidator, passwordValidator } from "@/utils/validators"
+import {
+  emailValidator,
+  passwordValidator,
+  usernameValidator,
+} from "@/utils/validators"
 import Alert from "@/web/components/ui/Alert"
 import Form from "@/web/components/ui/Form"
 import FormField from "@/web/components/ui/FormField"
@@ -10,10 +14,12 @@ import { Formik } from "formik"
 import { object } from "yup"
 
 const initialValues = {
+  username: "",
   email: "",
   password: "",
 }
 const validationSchema = object({
+  username: usernameValidator.label("Username"),
   email: emailValidator.label("E-mail"),
   password: passwordValidator.label("Password"),
 })
@@ -49,6 +55,12 @@ const SignUpPage = () => {
         onSubmit={handleSubmit}
       >
         <Form>
+          <FormField
+            name="username"
+            type="text"
+            placeholder="Enter your username"
+            label="Username"
+          />
           <FormField
             name="email"
             type="email"
