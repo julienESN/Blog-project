@@ -1,6 +1,7 @@
 import { UnauthorizedError } from "@/api/errors"
 import auth from "@/api/middlewares/auth"
 import { validate } from "@/api/middlewares/validate"
+import { hashPassword } from "@/utils/passwordUtils"
 import mw from "@/api/mw"
 import config from "@/config"
 import { emailValidator, passwordValidator } from "@/utils/validators"
@@ -29,12 +30,9 @@ const handle = mw({
         throw new UnauthorizedError()
       }
 
-      const [passwordHash] = await UserModel.hashPassword(
-        password,
-        user.passwordSalt,
-      )
+      const [hashedPassword] = await hashPassword(password, user.passwordSalt)
 
-      if (passwordHash !== user.passwordHash) {
+      if (hashedPassword !== user.passwordHash) {
         throw new UnauthorizedError()
       }
 

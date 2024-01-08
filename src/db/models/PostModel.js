@@ -1,7 +1,6 @@
-import BaseModel from "@/db/models/BaseModel";
-
+import BaseModel from "@/db/models/BaseModel"
 class PostModel extends BaseModel {
-  static tableName = "posts";
+  static tableName = "posts"
 
   static get jsonSchema() {
     return {
@@ -13,23 +12,21 @@ class PostModel extends BaseModel {
         title: { type: "string", minLength: 1, maxLength: 255 },
         content: { type: "string", minLength: 1 },
       },
-    };
+    }
   }
 
   static get relationMappings() {
-    const UserModel = require("./UserModel");
-
     return {
       author: {
         relation: BaseModel.BelongsToOneRelation,
-        modelClass: UserModel,
+        modelClass: () => require("./UserModel").default,
         join: {
           from: "posts.author_id",
           to: "users.id",
         },
       },
-    };
+    }
   }
 }
 
-export default PostModel;
+export default PostModel
