@@ -40,8 +40,11 @@ const createApiClient =
       })
   }
 const apiClient = createApiClient()
+
 apiClient.post = createApiClient("POST")
+apiClient.get = createApiClient("GET")
 apiClient.patch = createApiClient("PATCH")
 apiClient.delete = createApiClient("DELETE")
+apiClient.put = createApiClient("PUT")
 
 export default apiClient
