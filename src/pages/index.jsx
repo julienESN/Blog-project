@@ -4,6 +4,7 @@ import Pagination from "@/web/components/ui/Pagination"
 import apiClient from "@/web/services/apiClient"
 import { useQuery } from "@tanstack/react-query"
 import { useRouter } from "next/router"
+import withAuth from "@/web/components/hoc/withAuth"
 
 export const getServerSideProps = async ({ query: { page } }) => {
   const data = await apiClient("/posts", { params: { page } })
@@ -65,4 +66,4 @@ const IndexPage = ({ initialData }) => {
   )
 }
 
-export default IndexPage
+export default withAuth(IndexPage)
