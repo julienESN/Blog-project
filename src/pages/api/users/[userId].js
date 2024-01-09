@@ -6,6 +6,7 @@ import {
   userIdValidator,
   emailValidator,
   passwordValidator,
+  usernameValidator,
 } from "@/utils/validators"
 
 const handle = mw({
@@ -16,13 +17,8 @@ const handle = mw({
         userId: userIdValidator,
       },
     }),
-    async ({
-      models: { UserModel },
-      input: {
-        params: { userId },
-      },
-      res,
-    }) => {
+    async ({ models: { UserModel }, session, res }) => {
+      const userId = session.id
       const user = await UserModel.query().findById(userId)
       if (!user) {
         throw new NotFoundError("User not found")
@@ -30,26 +26,34 @@ const handle = mw({
       res.send(user)
     },
   ],
-  PUT: [
+
+  PATCH: [
     auth,
     validate({
-      params: {
-        userId: userIdValidator,
-      },
       body: {
+        username: usernameValidator.optional(),
         email: emailValidator.optional(),
         password: passwordValidator.optional(),
       },
     }),
-    async ({
-      models: { UserModel },
-      input: {
-        params: { userId },
-        body,
-      },
-      res,
-    }) => {},
+    async ({ models: { UserModel }, session, input: { body }, req, res }) => {
+      const userId = session.id
+
+      const userToUpdate = await UserModel.query().findById(userId)
+      if (!userToUpdate) {
+        throw new NotFoundError("User not found")
+      }
+
+      const updatedFields = { ...body }
+      const updatedUser = await UserModel.query().patchAndFetchById(
+        userId,
+        updatedFields,
+      )
+
+      res.send(updatedUser)
+    },
   ],
+
   DELETE: [
     auth,
     validate({

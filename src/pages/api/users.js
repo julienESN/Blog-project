@@ -43,6 +43,7 @@ const handle = mw({
       res.send({ result: true })
     },
   ],
+
   GET: [
     auth,
     validate({
@@ -63,58 +64,6 @@ const handle = mw({
         return
       }
       res.send(user)
-    },
-  ],
-  PUT: [
-    auth,
-    validate({
-      body: {
-        email: emailValidator.optional(),
-        password: passwordValidator.optional(),
-      },
-    }),
-    async ({
-      models: { UserModel },
-      input: {
-        body,
-        params: { userId },
-      },
-      res,
-    }) => {
-      const updatedFields = {}
-
-      if (body.email) {
-        updatedFields.email = body.email
-      }
-      if (body.password) {
-        const [passwordHash, passwordSalt] = await hashPassword(body.password)
-        updatedFields.passwordHash = passwordHash
-        updatedFields.passwordSalt = passwordSalt
-      }
-
-      const updatedUser = await UserModel.query().patchAndFetchById(
-        userId,
-        updatedFields,
-      )
-      res.send(updatedUser)
-    },
-  ],
-  DELETE: [
-    auth,
-    validate({
-      params: {
-        userId: userIdValidator,
-      },
-    }),
-    async ({
-      models: { UserModel },
-      input: {
-        params: { userId },
-      },
-      res,
-    }) => {
-      await UserModel.query().deleteById(userId)
-      res.status(204).send()
     },
   ],
 })

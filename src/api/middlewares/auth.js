@@ -3,23 +3,19 @@ import config from "@/config"
 import jsonwebtoken from "jsonwebtoken"
 
 const auth = async (ctx) => {
-  const {
-    req: {
-      cookies: { [config.security.jwt.cookieName]: sessionToken },
-    },
-    next,
-  } = ctx
-
   try {
     const { payload } = jsonwebtoken.verify(
-      sessionToken,
+      ctx.req.cookies[config.security.jwt.cookieName],
       config.security.jwt.secret,
     )
 
-    ctx.session = payload
+    ctx.session = {
+      id: payload.id,
+    }
 
-    await next()
+    await ctx.next()
   } catch (err) {
+    console.error("Auth Middleware - Error:", err)
     throw new ForbiddenError()
   }
 }
