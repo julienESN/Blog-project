@@ -30,10 +30,9 @@ const Header = () => {
                 <MenuItem href="/edit-profile">Edit Profile</MenuItem>
                 <MenuItem href="/posts/create">Create Post</MenuItem>
 
-                {session.userRole === "admin" && (
+                {session && session.role === "admin" && (
                   <>
-                    <MenuItem href="/admin/users">List Users</MenuItem>
-                    <MenuItem href="/admin/posts">Edit Posts</MenuItem>
+                    <MenuItem href="/admin/users">Admin Panel Users</MenuItem>
                   </>
                 )}
 

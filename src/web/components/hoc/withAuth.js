@@ -2,19 +2,21 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import { useSession } from "@/web/components/SessionContext"
 
-const withAuth = (WrappedComponent) => {
+const withAuth = (WrappedComponent, adminRequired = false) => {
   return (props) => {
     const router = useRouter()
     const { session } = useSession()
     const [isLoading, setLoading] = useState(true)
 
     useEffect(() => {
-      if (!session && !isLoading) {
+      if (!session) {
         router.push("/sign-in")
+      } else if (adminRequired && session.role !== "admin") {
+        router.push("/") // ou vers une page 'Non autorisé'
       } else {
         setLoading(false)
       }
-    }, [session, isLoading, router])
+    }, [session, router, adminRequired])
 
     if (isLoading) {
       return <p>Loading...</p>

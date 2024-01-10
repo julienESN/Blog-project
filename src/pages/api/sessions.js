@@ -42,6 +42,7 @@ const handle = mw({
             id: user.id,
             username: user.username,
             email: user.email,
+            role: user.role,
           },
         },
         config.security.jwt.secret,
