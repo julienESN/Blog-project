@@ -12,6 +12,14 @@ export const seed = async (knex) => {
       role: "user",
       is_active: true,
     },
+    {
+      username: "jane_doe",
+      email: "jane@example.com",
+      passwordHash: "hash",
+      passwordSalt: "salt",
+      role: "admin",
+      is_active: true,
+    },
   ])
 
   await knex("posts").insert([

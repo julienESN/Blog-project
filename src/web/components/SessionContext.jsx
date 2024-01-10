@@ -13,6 +13,11 @@ export const useSession = () => {
 export const SessionProvider = (props) => {
   const [session, setSession] = useState(null)
 
+  const saveSessionToken = (jwt) => {
+    localStorage.setItem(config.security.session.storageKey, jwt)
+    const { payload } = jsonwebtoken.decode(jwt)
+    setSession(payload)
+  }
   const signOut = () => {
     localStorage.removeItem(config.security.session.storageKey)
 
@@ -36,6 +41,7 @@ export const SessionProvider = (props) => {
       value={{
         session,
         signOut,
+        saveSessionToken,
       }}
     />
   )

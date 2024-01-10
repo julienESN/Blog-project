@@ -1,5 +1,5 @@
 import { emailValidator, passwordValidator } from "@/utils/validators"
-import { useSession } from "@/web/components/SessionContext"
+import { useSession, saveSessionToken } from "@/web/components/SessionContext"
 import ErrorMessage from "@/web/components/ui/ErrorMessage"
 import Form from "@/web/components/ui/Form"
 import FormField from "@/web/components/ui/FormField"
@@ -18,7 +18,7 @@ const validationSchema = object({
   email: emailValidator.label("E-mail"),
   password: passwordValidator.label("Password"),
 })
-const SignUpPage = () => {
+const SignInPage = () => {
   const router = useRouter()
   const { saveSessionToken } = useSession()
   const { mutateAsync, error } = useMutation({
@@ -60,4 +60,4 @@ const SignUpPage = () => {
   )
 }
 
-export default SignUpPage
+export default SignInPage
