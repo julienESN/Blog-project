@@ -11,38 +11,40 @@ import {
 } from "@/utils/validators"
 
 const handle = mw({
-  POST: [
-    validate({
-      body: {
-        username: usernameValidator,
-        email: emailValidator,
-        password: passwordValidator,
-      },
-    }),
-    async ({
-      input: {
-        body: { username, email, password },
-      },
-      models: { UserModel },
-      res,
-    }) => {
-      const user = await UserModel.query().findOne({ email })
-
-      if (!user) {
-        throw new NotFoundError("User not found")
-      }
-
-      const [passwordHash, passwordSalt] = await hashPassword(password)
-
-      await UserModel.query().insertAndFetch({
-        username,
-        email,
-        passwordHash,
-        passwordSalt,
-      })
-      res.send({ result: true })
+ POST: [
+  validate({
+    body: {
+      username: usernameValidator,
+      email: emailValidator,
+      password: passwordValidator,
     },
-  ],
+  }),
+  async ({
+    input: {
+      body: { username, email, password },
+    },
+    models: { UserModel },
+    res,
+  }) => {
+    const userExists = await UserModel.query().findOne({ email });
+
+    if (userExists) {
+      res.status(400).send({ error: "User already exists" });
+      return;
+    }
+
+    const [passwordHash, passwordSalt] = await hashPassword(password);
+
+    const newUser = await UserModel.query().insertAndFetch({
+      username,
+      email,
+      passwordHash,
+      passwordSalt,
+    });
+    res.status(201).send(newUser);
+  },
+],
+
 
   GET: [
     auth,
