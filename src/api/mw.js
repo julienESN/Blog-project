@@ -42,9 +42,6 @@ const mw = (handlers) => async (req, res) => {
       err instanceof ObjectionNotFoundError ? new NotFoundError() : err
 
     if (!(error instanceof PublicError)) {
-      // eslint-disable-next-line no-console
-      console.error(error)
-
       res
         .status(HTTP_ERRORS.INTERNAL_SERVER_ERROR)
         .send({ error: "Something went wrong." })

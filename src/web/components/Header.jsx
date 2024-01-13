@@ -9,7 +9,6 @@ const MenuItem = ({ children, href, ...otherProps }) => (
     </Link>
   </li>
 )
-
 const Header = () => {
   const { session, signOut } = useSession()
 

@@ -26,8 +26,8 @@ const handle = mw({
     }) => {
       const user = await UserModel.query().findOne({ email })
 
-      if (!user) {
-        throw new UnauthorizedError()
+      if (!user || !user.isActive) {
+        throw new UnauthorizedError("Invalid credentials or user not active.")
       }
 
       const [hashedPassword] = await hashPassword(password, user.passwordSalt)

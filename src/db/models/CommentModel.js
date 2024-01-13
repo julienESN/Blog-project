@@ -6,11 +6,11 @@ class CommentModel extends BaseModel {
   static get jsonSchema() {
     return {
       type: "object",
-      required: ["user_id", "post_id", "content"],
+      required: ["userId", "postId", "content"],
       properties: {
         id: { type: "integer" },
-        user_id: { type: "integer" },
-        post_id: { type: "integer" },
+        userId: { type: "integer" },
+        postId: { type: "integer" },
         content: { type: "string", minLength: 1 },
       },
     }

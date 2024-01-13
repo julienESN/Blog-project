@@ -1,5 +1,5 @@
-export const up = async (knex) => {
-  return knex.schema.createTable("comments", function (table) {
+export const up = (knex) =>
+  knex.schema.createTable("comments", (table) => {
     table.increments("id").primary()
     table
       .integer("user_id")
@@ -16,8 +16,5 @@ export const up = async (knex) => {
     table.text("content").notNullable()
     table.timestamps(true, true)
   })
-}
 
-export const down = async (knex) => {
-  return knex.schema.dropTable("comments")
-}
+export const down = (knex) => knex.schema.dropTable("comments")

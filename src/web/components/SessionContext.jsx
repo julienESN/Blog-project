@@ -7,12 +7,12 @@ const SessionContext = createContext()
 
 export const useSession = () => {
   const session = useContext(SessionContext)
+
   return session
 }
 
 export const SessionProvider = (props) => {
   const [session, setSession] = useState(null)
-
   const saveSessionToken = (jwt) => {
     localStorage.setItem(config.security.session.storageKey, jwt)
     const { payload } = jsonwebtoken.decode(jwt)
@@ -28,13 +28,16 @@ export const SessionProvider = (props) => {
 
   useEffect(() => {
     const jwt = localStorage.getItem(config.security.session.storageKey)
+
     if (jwt) {
       const { payload } = jsonwebtoken.decode(jwt)
       setSession(payload)
     } else {
+      // eslint-disable-next-line no-console
       console.log("No JWT found in localStorage")
     }
   }, [])
+
   return (
     <SessionContext.Provider
       {...props}

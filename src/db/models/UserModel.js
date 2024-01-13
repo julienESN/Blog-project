@@ -1,4 +1,5 @@
 import BaseModel from "@/db/models/BaseModel"
+
 class UserModel extends BaseModel {
   static tableName = "users"
 
@@ -13,7 +14,7 @@ class UserModel extends BaseModel {
         passwordHash: { type: "string" },
         passwordSalt: { type: "string" },
         role: { type: "string", default: "user" },
-        is_active: { type: "boolean", default: true },
+        isActive: { type: "boolean", default: true },
       },
     }
   }

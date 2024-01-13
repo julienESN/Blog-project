@@ -3,7 +3,7 @@ import { useRouter } from "next/router"
 import { useSession } from "@/web/components/SessionContext"
 
 const withAuth = (WrappedComponent, adminRequired = false) => {
-  return (props) => {
+  const WithAuthComponent = (props) => {
     const router = useRouter()
     const { session } = useSession()
     const [isLoading, setLoading] = useState(true)
@@ -12,11 +12,11 @@ const withAuth = (WrappedComponent, adminRequired = false) => {
       if (!session) {
         router.push("/sign-in")
       } else if (adminRequired && session.role !== "admin") {
-        router.push("/") // ou vers une page 'Non autorisé'
+        router.push("/")
       } else {
         setLoading(false)
       }
-    }, [session, router, adminRequired])
+    }, [session, router])
 
     if (isLoading) {
       return <p>Loading...</p>
@@ -24,6 +24,16 @@ const withAuth = (WrappedComponent, adminRequired = false) => {
 
     return <WrappedComponent {...props} />
   }
+
+  WithAuthComponent.displayName = `WithAuth(${getDisplayName(
+    WrappedComponent,
+  )})`
+
+  return WithAuthComponent
+}
+
+function getDisplayName(WrappedComponent) {
+  return WrappedComponent.displayName || WrappedComponent.name || "Component"
 }
 
 export default withAuth

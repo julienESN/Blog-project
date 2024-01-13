@@ -11,11 +11,11 @@ const auth = async (ctx) => {
 
     ctx.session = {
       id: payload.id,
+      role: payload.role,
     }
 
     await ctx.next()
   } catch (err) {
-    console.error("Auth Middleware - Error:", err)
     throw new ForbiddenError()
   }
 }

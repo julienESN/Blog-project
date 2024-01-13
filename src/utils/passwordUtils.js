@@ -7,8 +7,7 @@ const pbkdf2Async = promisify(pbkdf2)
 export const hashPassword = async (
   password,
   salt = randomBytes(config.security.password.keylen).toString("hex"),
-) => {
-  return [
+) => [
     (
       await pbkdf2Async(
         password,
@@ -20,4 +19,3 @@ export const hashPassword = async (
     ).toString("hex"),
     salt,
   ]
-}
