@@ -20,7 +20,7 @@ const handle = mw({
     async ({ session, models: { PostModel }, input: { body }, res }) => {
       const newPost = await PostModel.query().insertAndFetch({
         ...body,
-        author_id: session.userId,
+        authorId: session.userId,
       })
       res.status(201).send(newPost)
     },
@@ -45,7 +45,6 @@ const handle = mw({
         .orderBy("created_at", "DESC")
         .limit(config.ui.itemsPerPage)
         .offset((page - 1) * config.ui.itemsPerPage)
-
       const [{ count }] = await query.clone().count()
 
       res.send({

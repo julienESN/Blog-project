@@ -13,7 +13,6 @@ export const getServerSideProps = async ({ query: { page } }) => {
     props: { initialData: data },
   }
 }
-
 const IndexPage = ({ initialData }) => {
   const { query } = useRouter()
   const page = Number.parseInt(query.page || 1, 10)

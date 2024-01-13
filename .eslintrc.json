@@ -4,9 +4,7 @@
     "eslint:recommended",
     "prettier",
     "next/core-web-vitals",
-    "plugin:react/recommended",
-    "next/babel",
-    "next/core-web-vitals"
+    "plugin:react/recommended"
   ],
   "plugins": ["react", "react-hooks"],
   "env": {

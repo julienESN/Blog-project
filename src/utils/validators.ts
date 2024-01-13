@@ -11,7 +11,7 @@ export const emailValidator = string()
 export const passwordValidator = string()
   .min(10, "Password must be at least 10 characters long")
   .matches(
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$/,
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$/u,
     "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
   )
   .required("Password is required")
@@ -22,7 +22,7 @@ export const userIdValidator = number()
   .required("User ID is required")
 
 export const statusValidator = boolean().required("Status is required")
-
+export const isActiveValidator = boolean().required("Active status is required")
 export const idValidator = number()
   .positive("ID must be positive")
   .integer("ID must be an integer")
