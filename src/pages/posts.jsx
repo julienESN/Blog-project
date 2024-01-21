@@ -4,13 +4,15 @@ import apiClient from "@/web/services/apiClient"
 import { useSession } from "@/web/components/SessionContext"
 import Loader from "@/web/components/ui/Loader"
 import PostItem from "@/web/components/PostItem"
+import Link from "next/link"
 import withAuth from "@/web/components/hoc/withAuth"
 
 const UserPostsPage = () => {
   const { session } = useSession()
   const userId = session?.id
   const isSessionAvailable = Boolean(userId)
-  const fetchUserPosts = () => apiClient.get(`/posts`, { params: { userId } })
+  const fetchUserPosts = () =>
+    apiClient.get(`/posts/user`, { params: { userId } })
   const {
     data: posts,
     isLoading,
@@ -25,16 +27,31 @@ const UserPostsPage = () => {
     return <Loader />
   }
 
-  if (error || !posts || !Array.isArray(posts.result)) {
-    return <div>Error loading posts or no posts found.</div>
+  if (error) {
+    return <div>Failed to load posts. Please try again later.</div>
+  }
+
+  if (posts && posts.length === 0) {
+    return (
+      <div className="container mx-auto p-4">
+        <h1 className="text-3xl font-bold mb-4">My Posts</h1>
+        <p>
+          You don't have any posts yet.{" "}
+          <Link href="/posts/create">
+            <p className="text-blue-500 hover:text-blue-700">
+              Create your first post
+            </p>
+          </Link>
+        </p>
+      </div>
+    )
   }
 
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-4">My Posts</h1>
-      {posts.result.map((post) => (
-        <PostItem key={post.id} post={post} />
-      ))}
+      {Array.isArray(posts) &&
+        posts.map((post) => <PostItem key={post.id} post={post} />)}
     </div>
   )
 }
