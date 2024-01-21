@@ -2,7 +2,7 @@ export const up = (knex) =>
   knex.schema.createTable("posts", (table) => {
     table.increments("id").primary()
     table
-      .integer("author_id")
+      .integer("authorId")
       .unsigned()
       .references("id")
       .inTable("users")

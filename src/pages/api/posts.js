@@ -18,11 +18,15 @@ const handle = mw({
       },
     }),
     async ({ session, models: { PostModel }, input: { body }, res }) => {
-      const newPost = await PostModel.query().insertAndFetch({
-        ...body,
-        authorId: session.userId,
-      })
-      res.status(201).send(newPost)
+      try {
+        const newPost = await PostModel.query().insertAndFetch({
+          ...body,
+          authorId: session.id,
+        })
+        res.status(201).send(newPost)
+      } catch (error) {
+        res.status(500).send({ error: "Internal Server Error" })
+      }
     },
   ],
   GET: [
