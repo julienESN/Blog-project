@@ -22,7 +22,7 @@ class PostModel extends BaseModel {
         relation: BaseModel.BelongsToOneRelation,
         modelClass: () => require("./UserModel").default,
         join: {
-          from: "posts.author_id",
+          from: "posts.authorId",
           to: "users.id",
         },
       },

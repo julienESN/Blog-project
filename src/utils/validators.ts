@@ -29,6 +29,12 @@ export const idValidator = number()
   .min(1, "ID must be at least 1")
   .required("ID is required")
 
+export const postIdValidator = number()
+  .positive("ID must be positive")
+  .integer("ID must be an integer")
+  .min(1, "ID must be at least 1")
+  .required("ID is required")
+
 export const pageValidator = number()
   .positive("Page must be positive")
   .integer("Page must be an integer")

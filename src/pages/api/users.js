@@ -45,13 +45,11 @@ const handle = mw({
           })
           res.status(201).send(newUser)
         } catch (insertError) {
-          console.error("Error inserting new user:", insertError)
           res
             .status(500)
             .send({ error: "There was a problem creating the user." })
         }
       } catch (error) {
-        console.error("Error in sign-up route:", error)
         res.status(500).send({ error: "Internal server error." })
       }
     },
