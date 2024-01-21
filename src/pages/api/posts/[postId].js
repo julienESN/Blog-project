@@ -14,15 +14,15 @@ const handle = mw({
         postId: postIdValidator,
       },
     }),
-    async ({
-      models: { PostModel },
-      input: {
-        query: { postId },
-      },
-      res,
-    }) => {
-      const post = await PostModel.query().findById(postId).throwIfNotFound()
-      res.send(post)
+    async ({ models: { PostModel }, req, res }) => {
+      const { postId } = req.query
+
+      try {
+        const post = await PostModel.query().findById(postId).throwIfNotFound()
+        res.send(post)
+      } catch (error) {
+        res.status(500).send({ error: "Internal Server Error" })
+      }
     },
   ],
   PATCH: [
