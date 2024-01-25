@@ -1,13 +1,23 @@
+import React from "react"
 import { useRouter } from "next/router"
 import apiClient from "@/web/services/apiClient"
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import withAuth from "@/web/components/hoc/withAuth"
 import Loader from "@/web/components/ui/Loader"
 import { formatDateTimeShort } from "@/utils/formatters"
+import CommentsList from "@/web/components/CommentsList"
+import AddComment from "@/web/components/AddComments"
 
+const useAddCommentMutation = (postId, onSuccess) =>
+  useMutation({
+    mutationFn: (commentData) =>
+      apiClient.post(`/posts/${postId}/comments`, commentData),
+    onSuccess,
+  })
 const PostPage = () => {
-  const { query } = useRouter()
-  const { postId } = query
+  const router = useRouter()
+  const queryClient = useQueryClient()
+  const { postId } = router.query
   const {
     data: post,
     isLoading,
@@ -17,31 +27,49 @@ const PostPage = () => {
     queryFn: () => apiClient.get(`posts/${postId}`),
     enabled: Boolean(postId),
   })
+  const addCommentMutation = useAddCommentMutation(postId, () => {
+    queryClient.invalidateQueries(["post", postId])
+  })
+  const handleAddComment = (content) => {
+    const commentData = { content, postId }
+    addCommentMutation.mutate(commentData)
+  }
 
   if (isLoading) {
     return <Loader />
   }
 
   if (error) {
-    return <div>Error loading the post.</div>
+    return <div className="error-message">Error loading the post.</div>
   }
 
   if (!post) {
-    return <div>Post not found.</div>
+    return <div className="not-found-message">Post not found.</div>
   }
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-4">{post.title}</h1>
-      <p className="text-gray-600">
-        By {post.author ? post.author.username : "Unknown Author"}
-      </p>
-      <p className="text-gray-500 mb-8">
-        {formatDateTimeShort(new Date(post.created_at))}
-      </p>
-      <div className="post-content">{post.content}</div>
+    <div className="post-container">
+      <PostHeader post={post} />
+      <PostContent post={post} />
+      <CommentsList comments={post.comments} />
+      <AddComment onAddComment={handleAddComment} />
     </div>
   )
 }
+const PostHeader = ({ post }) => (
+  <div className="post-header">
+    <h1 className="post-title">{post.title}</h1>
+    <p className="post-info">
+      Posted by{" "}
+      <span className="author">
+        {post.author ? post.author.username : "Unknown Author"}
+      </span>{" "}
+      on {formatDateTimeShort(new Date(post.created_at))}
+    </p>
+  </div>
+)
+const PostContent = ({ post }) => (
+  <div className="post-content">{post.content}</div>
+)
 
 export default withAuth(PostPage)

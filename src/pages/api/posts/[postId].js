@@ -18,7 +18,11 @@ const handle = mw({
       const { postId } = req.query
 
       try {
-        const post = await PostModel.query().findById(postId).throwIfNotFound()
+        const post = await PostModel.query()
+          .findById(postId)
+          .throwIfNotFound()
+          .withGraphFetched("[author, comments.[user]]")
+
         res.send(post)
       } catch (error) {
         res.status(500).send({ error: "Internal Server Error" })

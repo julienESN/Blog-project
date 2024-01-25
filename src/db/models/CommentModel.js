@@ -17,23 +17,20 @@ class CommentModel extends BaseModel {
   }
 
   static get relationMappings() {
-    const UserModel = require("./UserModel")
-    const PostModel = require("./PostModel")
-
     return {
       user: {
         relation: BaseModel.BelongsToOneRelation,
-        modelClass: UserModel,
+        modelClass: () => require("./UserModel").default,
         join: {
-          from: "comments.user_id",
+          from: "comments.userId",
           to: "users.id",
         },
       },
       post: {
         relation: BaseModel.BelongsToOneRelation,
-        modelClass: PostModel,
+        modelClass: () => require("./PostModel").default,
         join: {
-          from: "comments.post_id",
+          from: "comments.postId",
           to: "posts.id",
         },
       },
