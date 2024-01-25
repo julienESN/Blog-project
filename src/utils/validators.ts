@@ -48,3 +48,7 @@ export const postTitleValidator = string()
 export const postContentValidator = string()
   .min(10, "Content must be at least 10 characters long")
   .required("Content is required")
+
+export const commentContentValidator = string()
+  .min(10, "Content must be at least 10 characters long")
+  .required("Content is required")

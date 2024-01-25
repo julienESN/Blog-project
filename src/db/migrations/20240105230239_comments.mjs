@@ -2,13 +2,13 @@ export const up = (knex) =>
   knex.schema.createTable("comments", (table) => {
     table.increments("id").primary()
     table
-      .integer("user_id")
+      .integer("userId")
       .unsigned()
       .references("id")
       .inTable("users")
       .onDelete("CASCADE")
     table
-      .integer("post_id")
+      .integer("postId")
       .unsigned()
       .references("id")
       .inTable("posts")
