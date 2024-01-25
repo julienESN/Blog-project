@@ -23,6 +23,7 @@ const handle = mw({
           .throwIfNotFound()
           .withGraphFetched("[author, comments.[user]]")
 
+        await PostModel.query().findById(postId).increment("visitCount", 1)
         res.send(post)
       } catch (error) {
         res.status(500).send({ error: "Internal Server Error" })

@@ -9,6 +9,7 @@ export const up = (knex) =>
       .onDelete("CASCADE")
     table.string("title").notNullable()
     table.text("content").notNullable()
+    table.integer("visitCount").unsigned().defaultTo(0)
     table.timestamps(true, true)
   })
 

@@ -6,6 +6,7 @@ const PostItem = ({ post }) => (
     <div>
       <h2 className="text-xl font-bold">{post.title}</h2>
       <p className="text-gray-600">{post.content}</p>
+      <div>Views: {post.visitCount || 0}</div>
     </div>
     <Link href={`/posts/${post.id}`}>Go to post</Link>
     <Link href={`/posts/${post.id}/edit`}>Edit post</Link>
