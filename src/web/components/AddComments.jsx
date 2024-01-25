@@ -1,12 +1,20 @@
 import React, { useState } from "react"
 import { commentContentValidator } from "@/utils/validators"
-
+import { findBadWords } from "@/utils/badWordsFilter"
 const AddComment = ({ onAddComment }) => {
   const [content, setContent] = useState("")
   const [error, setError] = useState("")
   const validateComment = () => {
     try {
       commentContentValidator.validateSync(content)
+      const badWords = findBadWords(content)
+
+      if (badWords.length > 0) {
+        throw new Error(
+          `Inappropriate language detected: ${badWords.join(", ")}`,
+        )
+      }
+
       setError("")
 
       return true

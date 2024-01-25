@@ -8,8 +8,7 @@ import SubmitButton from "@/web/components/ui/SubmitButton"
 import apiClient from "@/web/services/apiClient"
 import { useMutation } from "@tanstack/react-query"
 import { useRouter } from "next/router"
-import badWordsData from "@/utils/bannedWords.json"
-
+import { findBadWords } from "@/utils/badWordsFilter"
 const initialValues = {
   title: "",
   content: "",
@@ -18,14 +17,6 @@ const validationSchema = object({
   title: postTitleValidator.label("Title"),
   content: postContentValidator.label("Content"),
 })
-const findBadWords = (text) =>
-  badWordsData.RECORDS.reduce((acc, wordData) => {
-    if (text.includes(wordData.word)) {
-      acc.push(wordData.word)
-    }
-
-    return acc
-  }, [])
 const CreatePostPage = () => {
   const [errorMessage, setErrorMessage] = useState("")
   const router = useRouter()
