@@ -13,6 +13,7 @@ class PostModel extends BaseModel {
         authorId: { type: "integer" },
         title: { type: "string", minLength: 1, maxLength: 255 },
         content: { type: "string", minLength: 1 },
+        visitCount: { type: "integer", minimum: 0 },
       },
     }
   }

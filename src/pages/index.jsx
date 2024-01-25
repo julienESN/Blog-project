@@ -30,6 +30,9 @@ const TableRow = ({ post }) => (
           {post.author ? post.author.username : "Unknown Author"} on{" "}
           {formatDateTimeShort(new Date(post.created_at))}
         </div>
+        <div className="text-sm text-gray-500">
+          Views: {post.visitCount || 0}
+        </div>
       </div>
     </div>
   </div>
@@ -48,11 +51,17 @@ const IndexPage = ({ initialData }) => {
   return (
     <div className="container mx-auto p-4 bg-white shadow rounded-lg">
       {isFetching && <Loader />}
-      <div className="divide-y divide-gray-200">
-        {posts.map((post) => (
-          <TableRow key={post.id} post={post} />
-        ))}
-      </div>
+      {posts.length > 0 ? (
+        <div className="divide-y divide-gray-200">
+          {posts.map((post) => (
+            <TableRow key={post.id} post={post} />
+          ))}
+        </div>
+      ) : (
+        <div className="text-center text-gray-500 my-10">
+          No posts available.
+        </div>
+      )}
       <Pagination count={count} page={page} className="mt-8" />
     </div>
   )
