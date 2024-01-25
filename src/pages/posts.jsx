@@ -14,7 +14,7 @@ const UserPostsPage = () => {
   const fetchUserPosts = () =>
     apiClient.get(`/posts/user`, { params: { userId } })
   const {
-    data: posts,
+    data: userPostsData,
     isLoading,
     error,
   } = useQuery({
@@ -22,6 +22,7 @@ const UserPostsPage = () => {
     queryFn: fetchUserPosts,
     enabled: isSessionAvailable,
   })
+  console.log("userPostsData", userPostsData)
 
   if (isLoading) {
     return <Loader />
@@ -30,6 +31,8 @@ const UserPostsPage = () => {
   if (error) {
     return <div>Failed to load posts. Please try again later.</div>
   }
+
+  const { posts, totalComments, totalVisits } = userPostsData || {}
 
   if (posts && posts.length === 0) {
     return (
@@ -50,6 +53,10 @@ const UserPostsPage = () => {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-4">My Posts</h1>
+      <div className="mb-4">
+        <p>Total Comments: {totalComments}</p>
+        <p>Total Post Visits: {totalVisits}</p>
+      </div>
       {Array.isArray(posts) &&
         posts.map((post) => <PostItem key={post.id} post={post} />)}
     </div>
