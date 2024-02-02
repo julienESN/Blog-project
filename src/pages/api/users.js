@@ -1,7 +1,7 @@
 import { validate } from "@/api/middlewares/validate"
 import { UnauthorizedError } from "@/api/errors"
 import auth from "@/api/middlewares/auth"
-import { hashPassword } from "@/utils/passwordUtils"
+import { hashPassword } from "@/utils/passwordUtils.mjs"
 import mw from "@/api/mw"
 import {
   emailValidator,

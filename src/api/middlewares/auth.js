@@ -1,5 +1,5 @@
 import { ForbiddenError } from "@/api/errors"
-import config from "@/config"
+import config from "@/config.mjs"
 import jsonwebtoken from "jsonwebtoken"
 
 const auth = async (ctx) => {
