@@ -51,7 +51,7 @@ Administrator account credentials are provided in the seed file.
 Use the appropriate command to start your application.
 
 ```
-npm start
+npm run dev
 ```
 
 ## Run the Application:
